@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>登登宇宙·网络人格鉴定中心</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: linear-gradient(145deg, #f7d794 0%, #f8c291 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', system-ui, sans-serif;
+            padding: 16px;
+        }
+        .test-box {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 250, 225, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 48px 48px 32px 32px;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.2), 0 0 0 4px #f6e58d, 0 0 0 8px #dff9fb;
+            padding: 28px 24px 36px;
+            border: 2px dashed #e056a0;
+            transition: all 0.3s;
+        }
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: #6c2e7c;
+            text-align: center;
+            text-shadow: 4px 4px 0 #f9ca24;
+            letter-spacing: 2px;
+            word-break: break-word;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        .subhead {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #b83b5e;
+            background: #fef9e8;
+            display: inline-block;
+            padding: 6px 22px;
+            margin: 0 auto 20px;
+            border-radius: 60px;
+            border: 2px solid #ffbe76;
+            font-weight: 600;
+            box-shadow: inset 0 0 6px #f9ca24;
+        }
+        .question-panel {
+            background: #fff6da;
+            border-radius: 30px;
+            padding: 24px 20px;
+            margin: 16px 0 18px;
+            border: 3px solid #e1b12c;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.03), 0 10px 0 #7d5d3a;
+        }
+        .q-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d1b0e;
+            margin-bottom: 28px;
+            line-height: 1.4;
+            border-left: 12px solid #c44569;
+            padding-left: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .option {
+            background: #f8f0e5;
+            border: 3px solid #2f3640;
+            border-radius: 60px;
+            padding: 16px 22px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e272e;
+            box-shadow: 0 6px 0 #2f3640;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .option:hover {
+            background: #ffeaa7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #2f3640;
+        }
+        .option:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2f3640;
+        }
+        .option-letter {
+            background: #c44569;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 0 #6b1e36;
+            flex-shrink: 0;
+        }
+        .progress {
+            margin: 20px 0 10px;
+            display: flex;
+            justify-content: space-between;
+            color: #4a2c2a;
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0 10px;
+        }
+        .restart-btn {
+            background: none;
+            border: none;
+            color: #4834d4;
+            font-weight: 800;
+            text-decoration: underline wavy #f9ca24;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+        .result-area {
+            background: #eccc68;
+            border-radius: 28px;
+            padding: 24px 22px;
+            border: 4px solid #2ed573;
+            box-shadow: inset 0 0 0 3px white, 0 10px 0 #1e7e34;
+            margin-top: 20px;
+        }
+        .result-type {
+            font-size: 3.2rem;
+            font-weight: 900;
+            text-align: center;
+            background: #fff;
+            display: inline-block;
+            padding: 10px 40px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+            border: 4px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            letter-spacing: 6px;
+            color: #1e1e2f;
+        }
+        .result-desc {
+            font-size: 1.2rem;
+            background: #fffbee;
+            padding: 20px;
+            border-radius: 24px;
+            border: 2px dashed #c44569;
+            color: #1e1e2f;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+            justify-content: center;
+            margin: 18px 0 6px;
+        }
+        .badge {
+            background: #2d3436;
+            color: #fdcb6e;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1rem;
+            border: 1px solid gold;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .flex-center {
+            display: flex;
+            justify-content: center;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+        }
+        .btn {
+            background: #f6e58d;
+            border: 3px solid #2f3640;
+            border-radius: 50px;
+            padding: 12px 24px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #1e272e;
+            box-shadow: 0 6px 0 #2f3640;
+            cursor: pointer;
+            transition: 0.1s;
+            border: none;
+            border: 3px solid #2f3640;
+        }
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2f3640;
+        }
+        .btn.restart {
+            background: #fab1a0;
+            color: #2d3436;
+        }
+        .footer-note {
+            text-align: right;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            color: #4b3b2b;
+            opacity: 0.8;
+        }
+        @media (max-width: 480px) {
+            .test-box { padding: 16px 12px; }
+            h1 { font-size: 2rem; }
+            .q-text { font-size: 1.3rem; }
+            .option { padding: 12px 14px; font-size: 1rem; }
+            .result-type { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="test-box" id="appContainer">
+    <h1>🧬登登宇宙鉴定🧬</h1>
+    <div style="text-align: center;"><span class="subhead">非正常人类研究中心</span></div>
+    
+    <!-- 测试卡片 -->
+    <div id="quizSection">
+        <div class="question-panel">
+            <div class="q-text" id="questionText">加载题目中...</div>
+            <div class="options" id="optionsContainer"></div>
+        </div>
+        <div class="progress">
+            <span id="questionCounter">第1/7题</span>
+            <span>🤡搞心态版🤡</span>
+        </div>
+        <div class="action-buttons">
+            <button class="btn restart" id="restartBtn">🔁 重新投胎</button>
+            <span id="nextHint" style="font-weight: 500;color:#442b18;"></span>
+        </div>
+    </div>
+
+    <!-- 结果区域 -->
+    <div id="resultSection" class="hidden">
+        <div class="result-area">
+            <div class="flex-center"><span class="result-type" id="resultTypeName">霸霸</span></div>
+            <div class="result-desc" id="resultDescription">正在读取你的DNA...</div>
+            <div style="margin-top: 24px; text-align: center;">
+                <button class="btn restart" id="restartFromResultBtn">🔁 再测一次 (我不服)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 展示所有可能的物种徽章 -->
+    <div class="badge-list">
+        <span class="badge">霸霸</span><span class="badge">嚒嚒</span><span class="badge">渣渣</span>
+        <span class="badge">小登</span><span class="badge">中登</span><span class="badge">老登</span>
+        <span class="badge">神金</span><span class="badge">蒜瓣</span><span class="badge">呱呱</span>
+        <span class="badge">犟牛</span><span class="badge">酸菜</span><span class="badge">闷蛋</span>
+        <span class="badge">抠抠</span><span class="badge">旺旺</span>
+    </div>
+    <div class="footer-note">⚡ 本测试纯属胡闹 · 准到报警 ⚡</div>
+</div>
+
+<script>
+    (function(){
+        "use strict";
+
+        // ---------- 14种类型全设定 ----------
+        const TYPE_MAP = {
+            '霸霸': { emoji: '👑', desc: '一种情绪稳定的家庭统治者。你拥有与生俱来的威严，但主要体现在让外卖小哥爬六楼不敢抱怨。口头禅：“我说完了，谁赞成谁反对？”' },
+            '嚒嚒': { emoji: '🤱', desc: '口头禅为“哎哟喂”的操心担当。明明同龄人，你非要把人家当崽养。降温提醒、吃饭监督三连，真遇事第一个上。' },
+            '渣渣': { emoji: '🌊', desc: '情感界的战术大师，主打雨露均沾。发给每个人的晚安表情包都不一样。你的海王语录包括：“你是个好人”“刚才没信号”。' },
+            '小登': { emoji: '🐣', desc: '刚孵化的人类幼崽进阶体，尚在加载中。坚信自己是成熟大人，证据：会自己用洗衣机。烦恼：同事没叫我点奶茶。' },
+            '中登': { emoji: '🧔', desc: '登登宇宙中坚，活爹预备役。熟练摸鱼用Excel聊天，对老板的饼礼貌咀嚼。但打折时原形毕露。' },
+            '老登': { emoji: '🧓', desc: '家族群瑰宝，谣言终结者（以传播谣言的方式）。手机字体比别人大两号，最爱说“你们年轻人不懂”，但头像永远是儿女小时候。' },
+            '神金': { emoji: '🤪', desc: '精神状态遥遥领先，发疯文学首席执行者。上一秒端庄打字，下一秒厕所跳舞。信条：“与其内耗自己，不如外耗别人”。' },
+            '蒜瓣': { emoji: '🧄', desc: '存在感不强但没你不行。群里潜水，开口必是金句或致命吐槽。朋友觉得你可有可无，你出差一周他们饭都不香了。' },
+            '呱呱': { emoji: '🐸', desc: '人间小喇叭，八卦集散中心。从王大妈家狗丢了到国际局势你都门儿清。停电断网时你是全村唯一娱乐来源。' },
+            '犟牛': { emoji: '🐂', desc: '南墙拆迁办主任。吵架没输过，朋友没剩几个。优点是用情专一，因为除了你没人受得了。' },
+            '酸菜': { emoji: '🥬', desc: '又酸又菜。朋友圈毒舌大师，现实行动力为零。嘴上“切，P的吧”，心里“为什么我不行”。' },
+            '闷蛋': { emoji: '🥚', desc: '沉默的火山，潜水区常驻理事。表面安静如鸡，但若触碰底线，万字檄文让你怀疑人生。警告：闷蛋爆炸方圆十里无人生还。' },
+            '抠抠': { emoji: '💰', desc: '精算学野生传承人，满减界的华罗庚。为了省运费多凑30块，然后继续抠搜。座右铭：“该省省，该花花，骑自行车去酒吧”。' },
+            '旺旺': { emoji: '☀️', desc: '人形充电宝，阳气聚合体。朋友们在你这里充完电就嗨，你电量耗尽自动变闷蛋。副作用：太暖了偶尔烫伤自己。' }
+        };
+
+        const TYPE_LIST = Object.keys(TYPE_MAP);  // 14个
+
+        // ---------- 题库 (7道灵魂拷问) ----------
+        // 每个选项会给若干类型加分 (采用累加制)
+        const questions = [
+            {
+                text: '🌙 半夜三点你突然醒了，会做什么？',
+                options: [
+                    { text: '起身检查冰箱，没饿也得吃两口', scores: { '小登':2, '嚒嚒':1, '抠抠':1 } },
+                    { text: '刷手机直到刷出“已无新内容”', scores: { '渣渣':2, '中登':1, '神金':1 } },
+                    { text: '把被子裹成蚕宝宝继续睡', scores: { '闷蛋':2, '躺躺':1, '小登':1 } }, // 躺躺没入列但小加, 没躺躺就不计
+                    { text: '在家族群发“都睡了吗”并@所有人', scores: { '老登':3, '霸霸':1, '呱呱':1 } }
+                ]
+            },
+            {
+                text: '🦸 你获得了一种超能力，你希望是？',
+                options: [
+                    { text: '让老板/老师开会时自动静音', scores: { '中登':2, '霸霸':2, '犟牛':1 } },
+                    { text: '伸手就能从屏幕里抓出零食', scores: { '抠抠':2, '小登':1, '旺旺':1 } },
+                    { text: '所有讨厌的人靠近自动播放《大悲咒》', scores: { '神金':3, '酸菜':2, '闷蛋':1 } },
+                    { text: '每天自动获得一杯奶茶送到手', scores: { '嚒嚒':2, '旺旺':2, '渣渣':1 } }
+                ]
+            },
+            {
+                text: '💬 朋友发消息“在吗？”，你第一反应？',
+                options: [
+                    { text: '假装没看见，过三小时回“刚才在洗澡”', scores: { '渣渣':3, '蒜瓣':1, '抠抠':1 } },
+                    { text: '回一个“？”但心里预演了借钱场景', scores: { '犟牛':2, '酸菜':2, '中登':1 } },
+                    { text: '直接打语音过去吓死他', scores: { '神金':3, '霸霸':1, '呱呱':1 } },
+                    { text: '秒回“在呢怎么啦宝”', scores: { '旺旺':3, '嚒嚒':2, '小登':1 } }
+                ]
+            },
+            {
+                text: '🐾 如果必须养一种奇怪宠物，你选？',
+                options: [
+                    { text: '电子蚊子，每晚在仇人耳边嗡嗡', scores: { '酸菜':3, '神金':2, '闷蛋':1 } },
+                    { text: '会自己上厕所还会点外卖的猫', scores: { '抠抠':2, '中登':2, '渣渣':1 } },
+                    { text: '一块有表情的石头，叫“小登”', scores: { '小登':3, '蒜瓣':2, '闷蛋':1 } },
+                    { text: '一条会骂人的鹦鹉', scores: { '呱呱':3, '犟牛':2, '老登':1 } }
+                ]
+            },
+            {
+                text: '🎵 你的人生BGM是？',
+                options: [
+                    { text: '《好运来》(DJ版)', scores: { '老登':2, '旺旺':2, '嚒嚒':1 } },
+                    { text: '《悬溺》(0.8倍速emo版)', scores: { '渣渣':2, '酸菜':2, '闷蛋':2 } },
+                    { text: '《爷们要战斗》(纯享)', scores: { '犟牛':3, '霸霸':2, '中登':1 } },
+                    { text: '《大悲咒》但remix', scores: { '神金':3, '呱呱':1, '蒜瓣':2 } }
+                ]
+            },
+            {
+                text: '📱 领导/长辈在群里发养生谣言，你会？',
+                options: [
+                    { text: '反手转发《辟谣！这些伪科学害了多少人》', scores: { '犟牛':3, '霸霸':2, '蒜瓣':1 } },
+                    { text: '回复“👍👍👍”，然后设置免打扰', scores: { '中登':3, '闷蛋':2, '抠抠':1 } },
+                    { text: '用更离谱的谣言回应“吃月饼能治脚气”', scores: { '呱呱':3, '神金':2, '渣渣':1 } },
+                    { text: '私聊长辈温柔科普', scores: { '旺旺':3, '嚒嚒':2, '老登':1 } }
+                ]
+            },
+            {
+                text: '💘 你觉得自己在感情中像什么？',
+                options: [
+                    { text: '野生奥特曼，总是在需要时闪红灯', scores: { '霸霸':2, '旺旺':2, '犟牛':1 } },
+                    { text: '一条咸鱼，但梦想是翻身', scores: { '小登':2, '中登':2, '酸菜':2 } },
+                    { text: '深夜网抑云评论区', scores: { '闷蛋':3, '渣渣':2, '酸菜':1 } },
+                    { text: '24小时自动回复机器人', scores: { '嚒嚒':3, '抠抠':2, '蒜瓣':1 } }
+                ]
+            }
+        ];
+
+        // 为兼容“躺躺”未收录，忽略即可。
+        const VALID_TYPES = new Set(TYPE_LIST);
+
+        // 状态
+        let currentIndex = 0;
+        let scores = {};
+        const totalQ = questions.length;
+
+        // DOM
+        const quizSection = document.getElementById('quizSection');
+        const resultSection = document.getElementById('resultSection');
+        const questionText = document.getElementById('questionText');
+        const optionsDiv = document.getElementById('optionsContainer');
+        const counterSpan = document.getElementById('questionCounter');
+        const nextHint = document.getElementById('nextHint');
+        const resultTypeName = document.getElementById('resultTypeName');
+        const resultDesc = document.getElementById('resultDescription');
+        const restartBtn = document.getElementById('restartBtn');
+        const restartFromResult = document.getElementById('restartFromResultBtn');
+
+        // 初始化分数
+        function initScores() {
+            scores = {};
+            TYPE_LIST.forEach(t => scores[t] = 0);
+        }
+
+        // 更新题目显示
+        function renderQuestion(index) {
+            const q = questions[index];
+            questionText.textContent = q.text;
+            counterSpan.textContent = `第${index+1}/${totalQ}题 · 憋选太快`;
+            
+            let html = '';
+            q.options.forEach((opt, optIdx) => {
+                const letter = String.fromCharCode(65 + optIdx); // A,B,C,D
+                html += `<div class="option" data-opt-index="${optIdx}">
+                    <span class="option-letter">${letter}</span>
+                    <span>${opt.text}</span>
+                </div>`;
+            });
+            optionsDiv.innerHTML = html;
+
+            // 绑定选项事件
+            document.querySelectorAll('.option').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    const idx = parseInt(el.dataset.optIndex);
+                    handleSelect(index, idx);
+                });
+            });
+
+            nextHint.textContent = `🤔 快选！一共${totalQ}题`;
+        }
+
+        // 处理选择
+        function handleSelect(qIndex, optIndex) {
+            const question = questions[qIndex];
+            const selectedOpt = question.options[optIndex];
+            const scoreMap = selectedOpt.scores;
+
+            // 累加分数 (只加有效类型)
+            Object.entries(scoreMap).forEach(([type, val]) => {
+                if (VALID_TYPES.has(type)) {
+                    scores[type] = (scores[type] || 0) + val;
+                } else {
+                    // 如果出现“躺躺”这种不在库里的，忽略。
+                }
+            });
+
+            // 判断是否结束
+            if (qIndex + 1 < totalQ) {
+                currentIndex++;
+                renderQuestion(currentIndex);
+            } else {
+                // 结束，计算结果
+                showResult();
+            }
+        }
+
+        // 计算最高分类型 (若有同分取第一个/可稍微随机一下)
+        function getTopType() {
+            let maxScore = -1;
+            let topTypes = [];
+            TYPE_LIST.forEach(t => {
+                const sc = scores[t] || 0;
+                if (sc > maxScore) {
+                    maxScore = sc;
+                    topTypes = [t];
+                } else if (sc === maxScore) {
+                    topTypes.push(t);
+                }
+            });
+            // 平局随机选一个（更搞笑）
+            if (topTypes.length > 1) {
+                const randIdx = Math.floor(Math.random() * topTypes.length);
+                return topTypes[randIdx];
+            }
+            return topTypes[0];
+        }
+
+        // 显示结果
+        function showResult() {
+            const winner = getTopType();
+            const info = TYPE_MAP[winner];
+            
+            resultTypeName.textContent = `${winner} ${info.emoji}`;
+            resultDesc.textContent = info.desc + ' 鉴定完毕！';
+            
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+
+        // 重置测试
+        function resetTest() {
+            initScores();
+            currentIndex = 0;
+            renderQuestion(0);
+            quizSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+        }
+
+        // 事件绑定
+        restartBtn.addEventListener('click', resetTest);
+        restartFromResult.addEventListener('click', resetTest);
+
+        // 启动
+        initScores();
+        renderQuestion(0);
+
+        // 加一点花絮: 若有人试图直接看结果，没门
+    })();
+</script>
+</body>
+</html>
